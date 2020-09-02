@@ -1,0 +1,11 @@
+{
+  "logging": true,
+  "logchannelname": "willywonkalog",
+  "activity": {
+    "type": "WATCHING",
+    "name": "Toastbrot.org",
+    "url": "https://toastbrot.org/"
+  },
+
+  "prefix": "willy!"
+}
