@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({
+  partials: ["MESSAGE", "CHANNEL", "REACTION"],
+});
 
 const config = require("./config/config.json");
 var token = "";
@@ -57,6 +59,26 @@ client.on("message", (message) => {
       message.guild.roles.cache.find((e) => e.name === "SCHÜLER"),
       "Hat die Regeln gelesen"
     );
+  }
+});
+
+client.on("messageReactionAdd", async (reaction, user) => {
+  if (reaction) {
+    try {
+      await reaction.fetch();
+
+      await user.fetch();
+    } catch {
+      reaction.message.channel.send("Ein Fehler ist aufgetreten, sorry");
+    }
+    if (reaction.message.channel.name == "regeln") {
+      reaction.message.guild
+        .member(user.id)
+        .roles.add(
+          reaction.message.guild.roles.cache.find((e) => e.name === "SCHÜLER")
+        );
+      console.log(reaction.remove());
+    }
   }
 });
 
