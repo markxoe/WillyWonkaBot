@@ -49,19 +49,19 @@ if (config.logging && config.logchannelname) {
 client.on("message", (message) => {
   if (message.content.startsWith(config.prefix)) {
     const args = message.content.slice(config.prefix.length).trim().split(/ +/);
-
+    const allArgsWithCommand = args.join(" ");
     const command = args.shift().toLowerCase();
     const allArgs = args.join(" ");
 
     const messageAuthor = message.author;
     const server = message.guild;
+    var embed = new Discord.MessageEmbed();
 
     if (command.includes("nickname")) {
       message.member
         .setNickname(allArgs)
         .then((e) => message.reply("Dein Nickname ist jetzt: " + e.nickname));
 
-      const embed = new Discord.MessageEmbed();
       embed
         .setTitle("Geänderter NickName")
 
@@ -70,10 +70,46 @@ client.on("message", (message) => {
         .addField("Neuer Nickname", allArgs)
         .setColor("#00aaaa")
         .setTimestamp();
+
       getLogChannel(server).send(embed);
       console.log(
         "Neuer Nickname (" + allArgs + ") für " + messageAuthor.username
       );
+    } else if (allArgsWithCommand.toLowerCase().includes("ich bin schüler")) {
+      if (
+        message.member.roles.cache.find((e) => e.name === "SCHÜLER") ===
+        undefined
+      ) {
+        message.member.roles
+          .add(
+            message.guild.roles.cache.find((e) => e.name === "SCHÜLER"),
+            "Weil er will"
+          )
+          .then(
+            () => {
+              message.reply("Du bist jetzt Schüler!");
+              embed
+                .setTitle("Es ist jetzt jemand Schüler")
+
+                .addField("User", messageAuthor.toString())
+                .addField("Channel", message.channel.toString())
+
+                .setColor("#00aaaa")
+                .setTimestamp();
+              getLogChannel(server).send(embed);
+            },
+            (e) => {
+              message.reply("Es gab da einen Fehler...");
+              console.log(e);
+            }
+          )
+          .catch((e) => {
+            message.reply("Es gab da einen anderen Fehler...");
+            console.log(e);
+          });
+      } else {
+        message.reply("Du bist doch schoono Schüler oder? :thinking:");
+      }
     }
   }
 });
