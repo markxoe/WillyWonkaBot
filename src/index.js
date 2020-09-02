@@ -54,6 +54,8 @@ client.on("message", (message) => {
     const allArgs = args.join(" ");
 
     const messageAuthor = message.author;
+    const messageMember = message.member;
+    const memberRoles = messageMember.roles.cache.map((e) => e.name);
     const server = message.guild;
     var embed = new Discord.MessageEmbed();
 
@@ -78,11 +80,8 @@ client.on("message", (message) => {
         "Neuer Nickname (" + allArgs + ") für " + messageAuthor.username
       );
     } else if (allArgsWithCommand.toLowerCase().includes("ich bin schüler")) {
-      if (
-        message.member.roles.cache.find((e) => e.name === "SCHÜLER") ===
-        undefined
-      ) {
-        message.member.roles
+      if (memberRoles.find((e) => e === "SCHÜLER") === undefined) {
+        messageMember.roles
           .add(
             message.guild.roles.cache.find((e) => e.name === "SCHÜLER"),
             "Weil er will"
@@ -114,6 +113,22 @@ client.on("message", (message) => {
           "Du bist doch schon Schüler oder? :thinking: Ich sag immer, Schlagsahne muss geschlagen werden"
         );
       }
+    } else if (allArgsWithCommand.toLowerCase().includes("hilfe")) {
+      const msg = `**Hilfe**
+Willy Wonka Bot Hilfe
+
+Prefix: \`willy!\`
+
+Befehle:
+- \`willy! ich bin schüler\` - Gibt dir dir Rolle Schüler
+- \`willy! Hilfe\` - Gibt dir diesen Screen
+
+
+> "Ich möchte das ihr Miss Beauregarde aufs Boot rollt und sie anschließend so schnell es geht in den Saftraum bringt, okay?!"
+> "In den Saftraum? Und was machen sie da mit ihr?"
+> "Sie wird dann ausgedrückt, wie ein kleiner blauer Pickel`;
+
+      message.channel.send(msg);
     }
   }
 });
