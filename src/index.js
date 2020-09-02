@@ -60,7 +60,9 @@ client.on("message", (message) => {
     if (command.includes("nickname")) {
       message.member
         .setNickname(allArgs)
-        .then((e) => message.reply("Dein Nickname ist jetzt: " + e.nickname));
+        .then((e) =>
+          message.reply("My dear child, dein Nickname ist jetzt: " + e.nickname)
+        );
 
       embed
         .setTitle("Geänderter NickName")
@@ -87,7 +89,7 @@ client.on("message", (message) => {
           )
           .then(
             () => {
-              message.reply("Du bist jetzt Schüler!");
+              message.reply("Du bist jetzt Schüler, my dear child! :flame:");
               embed
                 .setTitle("Es ist jetzt jemand Schüler")
 
@@ -108,7 +110,9 @@ client.on("message", (message) => {
             console.log(e);
           });
       } else {
-        message.reply("Du bist doch schon Schüler oder? :thinking:");
+        message.reply(
+          "Du bist doch schon Schüler oder? :thinking: Ich sag immer, Schlagsahne muss geschlagen werden"
+        );
       }
     }
   }
