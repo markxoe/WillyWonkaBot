@@ -47,7 +47,9 @@ if (config.logging && config.logchannelname) {
 }
 
 client.on("message", (message) => {
-  if (message.content.startsWith(config.prefix)) {
+  if (
+    message.content.trim().toLowerCase().startsWith(config.prefix.toLowerCase())
+  ) {
     const args = message.content.slice(config.prefix.length).trim().split(/ +/);
     const allArgsWithCommand = args.join(" ");
     const command = args.shift().toLowerCase();
