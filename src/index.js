@@ -48,6 +48,20 @@ if (config.logging && config.logchannelname) {
 
 client.on("message", (message) => {
   if (
+    message.content.trim().split(/ +/).join(" ").toLowerCase() ===
+      "Ich habe die Regeln gelesen".toLowerCase() &&
+    message.channel.name == "regeln"
+  ) {
+    message.delete();
+    message.member.roles.add(
+      message.guild.roles.cache.find((e) => e.name === "SCHÜLER"),
+      "Hat die Regeln gelesen"
+    );
+  }
+});
+
+client.on("message", (message) => {
+  if (
     message.content.trim().toLowerCase().startsWith(config.prefix.toLowerCase())
   ) {
     const args = message.content.slice(config.prefix.length).trim().split(/ +/);
