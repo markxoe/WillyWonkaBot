@@ -2,7 +2,12 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 
 const config = require("./config/config.json");
-const configSecrets = require("./config/secrets.json");
+var token = "";
+try {
+  token = require("./config/secrets.json").token;
+} catch (e) {
+  token = process.env.secret;
+}
 
 client.once("ready", () => {
   console.debug("ready");
@@ -50,4 +55,4 @@ if (config.logging && config.logchannelname) {
   });
 }
 
-client.login(configSecrets.token);
+client.login(token);
