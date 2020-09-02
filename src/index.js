@@ -6,7 +6,7 @@ var token = "";
 try {
   token = require("./config/secrets.json").token;
 } catch (e) {
-  token = process.env.secret;
+  token = process.env.BOT_TOKEN;
 }
 
 client.once("ready", () => {
@@ -29,15 +29,6 @@ if (config.logging && config.logchannelname) {
     console.log("Message: " + message.content);
     console.log("From: " + message.author.username);
 
-    if (!server.channels.cache.find((e) => e.name === config.logchannelname)) {
-      // Erstelle den Channel, wenn er noch nicht existiert
-      server.channels.create(config.logchannelname);
-    }
-
-    const logchannel = server.channels.cache.find(
-      (e) => e.name === config.logchannelname
-    );
-
     const embed = new Discord.MessageEmbed();
     embed
       .setTitle("Gelöschte Nachricht")
@@ -50,9 +41,53 @@ if (config.logging && config.logchannelname) {
       .setColor("#00aaaa")
       .setTitle("Gelöschte Nachricht")
       .setTimestamp();
-    logchannel.send(embed);
+    getLogChannel(server).send(embed);
     console.log("Done");
   });
 }
+
+client.on("message", (message) => {
+  if (message.content.startsWith(config.prefix)) {
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
+
+    const command = args.shift().toLowerCase();
+    const allArgs = args.join(" ");
+
+    const messageAuthor = message.author;
+    const server = message.guild;
+
+    if (command.includes("nickname")) {
+      message.member
+        .setNickname(allArgs)
+        .then((e) => message.reply("Dein Nickname ist jetzt: " + e.nickname));
+
+      const embed = new Discord.MessageEmbed();
+      embed
+        .setTitle("Geänderter NickName")
+
+        .addField("User", messageAuthor.toString())
+        .addField("Channel", message.channel.toString())
+        .addField("Neuer Nickname", allArgs)
+        .setColor("#00aaaa")
+        .setTimestamp();
+      getLogChannel(server).send(embed);
+      console.log(
+        "Neuer Nickname (" + allArgs + ") für " + messageAuthor.username
+      );
+    }
+  }
+});
+
+const getLogChannel = (server) => {
+  if (!server.channels.cache.find((e) => e.name === config.logchannelname)) {
+    // Erstelle den Channel, wenn er noch nicht existiert
+    server.channels.create(config.logchannelname);
+  }
+
+  const logchannel = server.channels.cache.find(
+    (e) => e.name === config.logchannelname
+  );
+  return logchannel;
+};
 
 client.login(token);
