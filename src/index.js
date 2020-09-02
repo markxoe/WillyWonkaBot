@@ -108,7 +108,7 @@ client.on("message", (message) => {
             console.log(e);
           });
       } else {
-        message.reply("Du bist doch schoono Schüler oder? :thinking:");
+        message.reply("Du bist doch schon Schüler oder? :thinking:");
       }
     }
   }
