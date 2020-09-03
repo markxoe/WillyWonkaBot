@@ -7,5 +7,7 @@
     "url": "https://toastbrot.org/"
   },
 
+  "errorTagging": " <@574283624409595905> ",
+
   "prefixes": ["willy!", "w!", "!"]
 }

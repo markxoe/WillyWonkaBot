@@ -38,7 +38,9 @@ if (config.logging && config.logchannelname) {
         await message.author.fetch(true);
       } catch (e) {
         console.log(e);
-        return message.channel.send("HILFE, ich habe einen Fehler!");
+        return message.channel.send(
+          config.errorTagging + "HILFE, ich habe einen Fehler!"
+        );
       }
     }
     if (message.author.bot) return;
@@ -73,7 +75,9 @@ client.on("message", async (message) => {
       await message.author.fetch(true);
     } catch (e) {
       console.log(e);
-      return message.channel.send("HILFE, ich habe einen Fehler!");
+      return message.channel.send(
+        config.errorTagging + "HILFE, ich habe einen Fehler!"
+      );
     }
   }
 
@@ -96,7 +100,9 @@ client.on("messageReactionAdd", async (reaction, user) => {
       await reaction.fetch();
       await user.fetch();
     } catch {
-      reaction.message.channel.send("Ein Fehler ist aufgetreten, sorry");
+      reaction.message.channel.send(
+        config.errorTagging + "Ein Fehler ist aufgetreten, sorry"
+      );
     }
 
     if (reaction.message.channel.name == "regeln") {
@@ -116,7 +122,9 @@ client.on("message", async (message) => {
       await message.author.fetch(true);
     } catch (e) {
       console.log(e);
-      return message.channel.send("HILFE, ich habe einen Fehler!");
+      return message.channel.send(
+        config.errorTagging + "HILFE, ich habe einen Fehler!"
+      );
     }
   }
 
@@ -176,12 +184,14 @@ client.on("message", async (message) => {
               getLogChannel(server).send(embed);
             },
             (e) => {
-              message.reply("Es gab da einen Fehler...");
+              message.reply(config.errorTagging + "Es gab da einen Fehler...");
               console.log(e);
             }
           )
           .catch((e) => {
-            message.reply("Es gab da einen anderen Fehler...");
+            message.reply(
+              config.errorTagging + "Es gab da einen anderen Fehler..."
+            );
             console.log(e);
           });
       } else {
