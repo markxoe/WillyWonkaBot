@@ -21,7 +21,15 @@ client.once("ready", () => {
 /* LOGGING */
 
 if (config.logging && config.logchannelname) {
-  client.on("messageDelete", (message) => {
+  client.on("messageDelete", async (message) => {
+    if (message.partial) {
+      try {
+        await message.author.fetch(true);
+      } catch (e) {
+        console.log(e);
+        return message.channel.send("HILFE, ich habe einen Fehler!");
+      }
+    }
     if (message.author.bot) return;
 
     const messageAuthor = message.author;
@@ -48,7 +56,16 @@ if (config.logging && config.logchannelname) {
   });
 }
 
-client.on("message", (message) => {
+client.on("message", async (message) => {
+  if (message.partial) {
+    try {
+      await message.author.fetch(true);
+    } catch (e) {
+      console.log(e);
+      return message.channel.send("HILFE, ich habe einen Fehler!");
+    }
+  }
+
   if (
     message.content.trim().split(/ +/).join(" ").toLowerCase() ===
       "Ich habe die Regeln gelesen".toLowerCase() &&
@@ -63,14 +80,14 @@ client.on("message", (message) => {
 });
 
 client.on("messageReactionAdd", async (reaction, user) => {
-  if (reaction) {
+  if (reaction.partial) {
     try {
       await reaction.fetch();
-
       await user.fetch();
     } catch {
       reaction.message.channel.send("Ein Fehler ist aufgetreten, sorry");
     }
+
     if (reaction.message.channel.name == "regeln") {
       reaction.message.guild
         .member(user.id)
@@ -82,7 +99,16 @@ client.on("messageReactionAdd", async (reaction, user) => {
   }
 });
 
-client.on("message", (message) => {
+client.on("message", async (message) => {
+  if (message.partial) {
+    try {
+      await message.author.fetch(true);
+    } catch (e) {
+      console.log(e);
+      return message.channel.send("HILFE, ich habe einen Fehler!");
+    }
+  }
+
   if (
     message.content.trim().toLowerCase().startsWith(config.prefix.toLowerCase())
   ) {
