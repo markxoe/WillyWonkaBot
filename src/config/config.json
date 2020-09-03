@@ -7,5 +7,5 @@
     "url": "https://toastbrot.org/"
   },
 
-  "prefix": "willy!"
+  "prefixes": ["willy!", "w!", "!"]
 }

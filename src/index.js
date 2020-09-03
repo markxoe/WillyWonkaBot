@@ -20,6 +20,17 @@ client.once("ready", () => {
 
 /* LOGGING */
 
+const getPrefix = (input = "") => {
+  return config.prefixes.find((_prefix) => {
+    if (input.toLowerCase().trim().startsWith(_prefix.toLowerCase().trim())) {
+      console.log("Yess");
+      return _prefix;
+    } else {
+      return false;
+    }
+  });
+};
+
 if (config.logging && config.logchannelname) {
   client.on("messageDelete", async (message) => {
     if (message.partial) {
@@ -109,10 +120,11 @@ client.on("message", async (message) => {
     }
   }
 
-  if (
-    message.content.trim().toLowerCase().startsWith(config.prefix.toLowerCase())
-  ) {
-    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
+  if (getPrefix(message.content)) {
+    const args = message.content
+      .slice(getPrefix(message.content))
+      .trim()
+      .split(/ +/);
     const allArgsWithCommand = args.join(" ");
     const command = args.shift().toLowerCase();
     const allArgs = args.join(" ");
