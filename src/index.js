@@ -20,6 +20,17 @@ client.once("ready", () => {
 
 /* LOGGING */
 
+const getPrefix = (input = "") => {
+  return config.prefixes.find((_prefix) => {
+    if (input.toLowerCase().trim().startsWith(_prefix.toLowerCase().trim())) {
+      console.log("Yess");
+      return _prefix;
+    } else {
+      return false;
+    }
+  });
+};
+
 if (config.logging && config.logchannelname) {
   client.on("messageDelete", async (message) => {
     if (message.partial) {
@@ -27,7 +38,9 @@ if (config.logging && config.logchannelname) {
         await message.author.fetch(true);
       } catch (e) {
         console.log(e);
-        return message.channel.send("HILFE, ich habe einen Fehler!");
+        return message.channel.send(
+          config.errorTagging + "HILFE, ich habe einen Fehler!"
+        );
       }
     }
     if (message.author.bot) return;
@@ -62,7 +75,9 @@ client.on("message", async (message) => {
       await message.author.fetch(true);
     } catch (e) {
       console.log(e);
-      return message.channel.send("HILFE, ich habe einen Fehler!");
+      return message.channel.send(
+        config.errorTagging + "HILFE, ich habe einen Fehler!"
+      );
     }
   }
 
@@ -85,7 +100,9 @@ client.on("messageReactionAdd", async (reaction, user) => {
       await reaction.fetch();
       await user.fetch();
     } catch {
-      reaction.message.channel.send("Ein Fehler ist aufgetreten, sorry");
+      reaction.message.channel.send(
+        config.errorTagging + "Ein Fehler ist aufgetreten, sorry"
+      );
     }
 
     if (reaction.message.channel.name == "regeln") {
@@ -105,14 +122,17 @@ client.on("message", async (message) => {
       await message.author.fetch(true);
     } catch (e) {
       console.log(e);
-      return message.channel.send("HILFE, ich habe einen Fehler!");
+      return message.channel.send(
+        config.errorTagging + "HILFE, ich habe einen Fehler!"
+      );
     }
   }
 
-  if (
-    message.content.trim().toLowerCase().startsWith(config.prefix.toLowerCase())
-  ) {
-    const args = message.content.slice(config.prefix.length).trim().split(/ +/);
+  if (getPrefix(message.content)) {
+    const args = message.content
+      .slice(getPrefix(message.content))
+      .trim()
+      .split(/ +/);
     const allArgsWithCommand = args.join(" ");
     const command = args.shift().toLowerCase();
     const allArgs = args.join(" ");
@@ -164,12 +184,14 @@ client.on("message", async (message) => {
               getLogChannel(server).send(embed);
             },
             (e) => {
-              message.reply("Es gab da einen Fehler...");
+              message.reply(config.errorTagging + "Es gab da einen Fehler...");
               console.log(e);
             }
           )
           .catch((e) => {
-            message.reply("Es gab da einen anderen Fehler...");
+            message.reply(
+              config.errorTagging + "Es gab da einen anderen Fehler..."
+            );
             console.log(e);
           });
       } else {
