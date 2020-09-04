@@ -111,7 +111,6 @@ client.on("messageReactionAdd", async (reaction, user) => {
         .roles.add(
           reaction.message.guild.roles.cache.find((e) => e.name === "SCHÜLER")
         );
-      console.log(reaction.remove());
     }
   }
 });
