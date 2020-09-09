@@ -3,11 +3,13 @@
   "logchannelname": "willywonkalog",
   "activity": {
     "type": "WATCHING",
-    "name": "Toastbrot.org",
+    "name": "Q11",
     "url": "https://toastbrot.org/"
   },
 
   "errorTagging": " <@574283624409595905> ",
+
+  "msgdeleteIgnoreUsers": ["markxoe#8333"],
 
   "prefixes": ["willy!", "w!", "!"]
 }
