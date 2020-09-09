@@ -9,5 +9,7 @@
 
   "errorTagging": " <@574283624409595905> ",
 
+  "msgdeleteIgnoreUsers": ["markxoe#8333"],
+
   "prefixes": ["willy!", "w!", "!"]
 }

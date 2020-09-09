@@ -45,7 +45,10 @@ if (config.logging && config.logchannelname) {
     }
     if (message.author.bot) return;
 
+    if (config.msgdeleteIgnoreUsers.includes(message.author.tag)) return;
+
     const messageAuthor = message.author;
+
     const server = message.guild;
 
     console.log("Deleted Message!");
